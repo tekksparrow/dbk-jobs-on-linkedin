@@ -1,0 +1,2 @@
+This text doc will contain a description, convention, and useage instructions with regards to this file. (Really this is just to get git to recognize an "empty" file so it shows up in the repo)
+

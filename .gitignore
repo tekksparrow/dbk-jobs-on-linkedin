@@ -1,0 +1,10 @@
+# Do Not Track Folder - when developing and posting publicly, hide your production config data here, ie. passwords/keys.
+dnt/*
+
+# Previous job files - hoarding junk on a repo is never cool
+previous-job-files/*.json
+
+# Python Stuff
+__pycache__/
+
+
