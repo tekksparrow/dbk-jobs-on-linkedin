@@ -48,9 +48,23 @@ def get_data(target_url, job_titles):
 
 def build_posts(payload_raw):
 
-	# Authroization
-	#
-	# Step 1: Determine which host site the program needs to seek permission
-	# Step 2: Else/If statement will build the necessary request link - must be a better way to do this?
-	# Step 3: Redirect user with authorization url, which will allow them to grant access to the program.
-	link_base = HOST_SITE_AUTH_URL[str_host_site]
+	# Build post String
+	post_string = ""
+	for job in payload_raw:
+		post_string = POST_TEMPLATE_P_ONE
+		post_string = post_string + str(job["title"]) + " " + str(job["location"]) + 
+		              "\n" + str(job["url"])
+		post_string = post_string + POST_TEMPLATE_P_ONE
+		posts.append(post_string)
+		post_string = ""
+
+	# # Format/Build LinkedIn post
+	# for job_post in posts:
+	# 	title="DBK JOB POSTING"
+	# 	post_json = {"comment": job_post, "visibility": {"code": "anyone"} }
+	# 	post_as_string = json.dumps(post_json)
+	# 	# post = "{}{}{}".format("'{'comment': '", job_post, "','visibility': {'code': 'anyone'} }")
+
+	# # response = requests.post("https://api.linkedin.com/v2/shares",data=post_data)
+	# 	headers = {'x-li-format': 'json', 'Content-Type': 'application/json'}
+	# 	params = {'oauth2_access_token': token}
