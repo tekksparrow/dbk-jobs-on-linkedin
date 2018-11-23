@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <title>{{ greeting }}</title>
+    </head>
+    <body>
+        <h1>POSTS</h1>
+        <hr>
+        {% for post in post_bank %}
+        <div><p> {{ post }} </p></div>
+        {% endfor %}
+    </body>
+</html>

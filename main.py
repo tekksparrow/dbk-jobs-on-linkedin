@@ -2,7 +2,6 @@ from flask import Flask, request
 from time  import sleep
 from uuid import uuid4
 
-
 # import requests.auth
 
 import os
@@ -12,6 +11,7 @@ import webbrowser
 import random
 
 from config import *
+from lib import tksp_posts tksp_oauth
 
 app = Flask(__name__)
 payload_raw       = []
@@ -20,7 +20,7 @@ auth_callback_url = ""
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return render_template('hello_world.html')
 
 @app.route('/call')
 def dollar_bank_call():
@@ -29,7 +29,7 @@ def dollar_bank_call():
 
 	payload_posts     = tksp_posts.build_posts(payload_raw)
 
-	auth_callback_url = tksp_oauth.seek_permission("linkedin", CLIENT_ID)
+	#auth_callback_url = tksp_oauth.seek_permission("linkedin", CLIENT_ID)
 
 
 	webbrowser.open(auth_callback_url)
@@ -38,9 +38,14 @@ def dollar_bank_call():
 
 @app.route('/call_review')
 def dollar_bank_callback_test():
+	greeting = "Review Dashboard"
 	# print all the posts
+	if not post_bank:
+		greeting = greeting + "\n\nNo IT posts found on this run."
 
 	# add a button to post or reject
+
+	return render_template('review.html', post_bank=payload_posts, greeting=greeting)
 
 
 
