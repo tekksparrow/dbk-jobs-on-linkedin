@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template, session
 from time  import sleep
 from uuid import uuid4
 
@@ -11,41 +11,62 @@ import webbrowser
 import random
 
 from config import *
-from lib import tksp_posts tksp_oauth
+from lib import tksp_posts, tksp_oauth
 
 app = Flask(__name__)
+app.secret_key = SESSION_KEY
+
 payload_raw       = []
 payload_posts     = []
-auth_callback_url = ""
 
 @app.route('/')
 def hello_world():
-    return render_template('hello_world.html')
+	
+	imgs_fn = []
+	imgs_fn.append("2n9vjp")
+	imgs_fn.append("2n9w1c")
+	imgs_fn.append("2na0y8")
+
+	rand_img = random.sample(imgs_fn, 1)
+
+	img = "./static/imgs/{}.jpg".format(rand_img[0])
+
+	return render_template('hello_world.html', hello_world=img)
 
 @app.route('/call')
 def dollar_bank_call():
+	auth_callback_url = ""
 
 	payload_raw       = tksp_posts.get_data(SRC_DATA_URL)
+	print ("get data return len # = {}".format(len(payload_raw)))
+	
 
 	payload_posts     = tksp_posts.build_posts(payload_raw)
+	session['payload'] = payload_posts
 
-	#auth_callback_url = tksp_oauth.seek_permission("linkedin", CLIENT_ID)
+	#auth_callback_url = tksp_oauth.seek_permission("linkedin", CLIENT_ID)	
+	if not auth_callback_url:
+		auth_callback_url = "Development MODE"
 
+	#webbrowser.open(auth_callback_url)
 
-	webbrowser.open(auth_callback_url)
-
-	return "You are being redirected to : " + auth_callback_url
+	return render_template('call.html', counter=len(payload_posts), auth_callback_url=auth_callback_url)
 
 @app.route('/call_review')
 def dollar_bank_callback_test():
 	greeting = "Review Dashboard"
 	# print all the posts
-	if not post_bank:
+	if len(session['payload']) == 0:
 		greeting = greeting + "\n\nNo IT posts found on this run."
+	else:
+		post_bank = session['payload']
+
+	print("the payload\n{}".format(post_bank[0]))
+
 
 	# add a button to post or reject
 
-	return render_template('review.html', post_bank=payload_posts, greeting=greeting)
+	return render_template('review.html', post_bank=post_bank, greeting=greeting)
 
 
 

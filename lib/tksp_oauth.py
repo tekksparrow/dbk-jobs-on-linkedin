@@ -4,8 +4,6 @@ from flask import request
 from time  import sleep
 from uuid import uuid4
 
-import requests
-import requests.auth
 import json
 import time
 import os
@@ -13,8 +11,6 @@ import sys
 import webbrowser
 
 from config import *
-
-import requests
 
 import json
 import time
@@ -32,7 +28,7 @@ def seek_permission(str_host_site, CLIENT_ID):
 	# Step 2: Else/If statement will build the necessary request link - must be a better way to do this?
 	# Step 3: Redirect user with authorization url, which will allow them to grant access to the program.
 	link_base = HOST_SITE_AUTH_URL[str_host_site]
-	if (str_host_site = "linkedin"):
+	if (str_host_site == "linkedin"):
 
 		link_response_code = "response_type=code"
 		link_redirect_url = "redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fcall_review"

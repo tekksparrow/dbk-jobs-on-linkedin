@@ -4,16 +4,13 @@ from flask import request
 from time  import sleep
 from uuid import uuid4
 
-import requests
-import requests.auth
 import json
 import time
 import os
 import sys
+import requests
 
 from config import *
-
-import requests
 
 import json
 import time
@@ -26,8 +23,7 @@ import time
 #
 # Args:
 # target_url : String of URL location of json data set.
-# job_titles : List of Strings representing job titles to filter upon.
-def get_data(target_url, job_titles):
+def get_data(target_url):
 	# STEP 1
 	try:
 		r = requests.get(url=target_url)
@@ -45,18 +41,26 @@ def get_data(target_url, job_titles):
 	except requests.exceptions.RequestException as e:
 		print(e)
 		sys.exit(1)
+	return extract_list
 
 def build_posts(payload_raw):
 
+	print("BUILD POSTS\n\n\n\n{}".format(len(payload_raw)))
+
 	# Build post String
+	posts = []
 	post_string = ""
 	for job in payload_raw:
 		post_string = POST_TEMPLATE_P_ONE
-		post_string = post_string + str(job["title"]) + " " + str(job["location"]) + 
-		              "\n" + str(job["url"])
+		post_string = post_string + "{} {}\n{}".format(
+			str(job["title"]), str(job["location"]), str(job["url"]))
 		post_string = post_string + POST_TEMPLATE_P_ONE
 		posts.append(post_string)
 		post_string = ""
+
+		print("build_posts # {}".format(len(posts)))
+
+	return posts
 
 	# # Format/Build LinkedIn post
 	# for job_post in posts:
