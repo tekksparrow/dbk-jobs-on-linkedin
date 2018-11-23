@@ -16,9 +16,6 @@ from lib import tksp_posts, tksp_oauth
 app = Flask(__name__)
 app.secret_key = SESSION_KEY
 
-payload_raw       = []
-payload_posts     = []
-
 @app.route('/')
 def hello_world():
 	
@@ -35,14 +32,18 @@ def hello_world():
 
 @app.route('/call')
 def dollar_bank_call():
+	try:
+		session.pop('payload')
+	except KeyError:
+		print('no key to pop')
 	auth_callback_url = ""
 
 	payload_raw       = tksp_posts.get_data(SRC_DATA_URL)
 	print ("get data return len # = {}".format(len(payload_raw)))
 	
-
-	payload_posts     = tksp_posts.build_posts(payload_raw)
-	session['payload'] = payload_posts
+	session['payload'] = payload_raw
+	print ("--------------------------->>>>>")
+	print(session['payload'][0])
 
 	#auth_callback_url = tksp_oauth.seek_permission("linkedin", CLIENT_ID)	
 	if not auth_callback_url:
@@ -50,22 +51,21 @@ def dollar_bank_call():
 
 	#webbrowser.open(auth_callback_url)
 
-	return render_template('call.html', counter=len(payload_posts), auth_callback_url=auth_callback_url)
+	return render_template('call.html', counter=len(payload_raw), auth_callback_url=auth_callback_url)
 
 @app.route('/call_review')
 def dollar_bank_callback_test():
+	print(session['payload'][0])
+	post_bank = session['payload']
+
+	payload_posts     = tksp_posts.build_posts(session['payload'])
+
 	greeting = "Review Dashboard"
 	# print all the posts
 	if len(session['payload']) == 0:
 		greeting = greeting + "\n\nNo IT posts found on this run."
 	else:
 		post_bank = session['payload']
-
-	print("the payload\n{}".format(post_bank[0]))
-
-
-	# add a button to post or reject
-
 	return render_template('review.html', post_bank=post_bank, greeting=greeting)
 
 

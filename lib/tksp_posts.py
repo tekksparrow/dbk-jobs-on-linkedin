@@ -23,7 +23,7 @@ import time
 #
 # Args:
 # target_url : String of URL location of json data set.
-def get_data(target_url):
+def get_data(target_url, sw_trim=True):
 	# STEP 1
 	try:
 		r = requests.get(url=target_url)
@@ -34,7 +34,12 @@ def get_data(target_url):
 			for title_key in JOB_TITLE_KEYS:
 				split_title = job["title"].upper().split()
 				if title_key in split_title:
-					extract_list.append(job)
+					if sw_trim:
+						trimed_job = {'title': job['title'], 'location': job['location'],
+						'url': job['url'], 'date': job['date_new']}
+						extract_list.append(trimed_job)
+					else:
+						extract_list.append(job)
 
 		current_job_file = extract_list
 
