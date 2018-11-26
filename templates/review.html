@@ -45,13 +45,13 @@
 		    </form>
 		  </div>
 		</nav>
-
+		<div class="container">
 		{% for post in post_bank %}
-		<div class="card">
+		<div class="card text-white bg-dark my-2">
 		  <div class="card-header">
 		    {{ post['title'] }}
 		  </div>
-		  <div class="card-body">
+		  <div class="card-body text-white bg-secondary">
 		  	<!-- if the post is new make a fancy title here
 		    <h5 class="card-title">Special title treatment</h5> -->
 		    <p class="card-text">Location  :  {{ post['location'] }}</p>
@@ -60,6 +60,7 @@
 		  </div>
 		</div>
 		{% endfor %}
+		</div>
 		
 
 
