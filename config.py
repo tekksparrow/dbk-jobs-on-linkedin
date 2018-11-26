@@ -23,6 +23,7 @@ CLIENT_ID      = ""
 CLIENT_SECRET  = "" 
 REDIRECT_URI   = "http://localhost:5000/call_review"
 CSFR_SECRET    = ""
+SESSION_KEY    = ""
 
 HOST_SITES_AUTH_URL = {
 	"linkedin" : "https://www.linkedin.com/oauth/v2/authorization?",
